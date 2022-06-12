@@ -21,8 +21,7 @@ defmodule LiveViewStudio.Boats do
     Repo.all(Boat)
   end
 
-  # [type: "sporting", prices: ["$", "$$"]]
-
+  # criteria will be a keyword list like: [type: "sporting", prices: ["$", "$$"]]
   def list_boats(criteria) when is_list(criteria) do
     query = from(b in Boat)
 
