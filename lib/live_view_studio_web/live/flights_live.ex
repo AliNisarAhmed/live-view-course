@@ -14,7 +14,7 @@ defmodule LiveViewStudioWeb.FlightsLive do
         matches: []
       )
 
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [flights: []]}
   end
 
   def render(assigns) do
