@@ -22,7 +22,7 @@ defmodule LiveViewStudio.Boats do
   end
 
   # criteria will be a keyword list like: [type: "sporting", prices: ["$", "$$"]]
-  def list_boards(criteria) when is_list(criteria) do
+  def list_boats(criteria) when is_list(criteria) do
     query = from(b in Boat)
 
     Enum.reduce(criteria, query, fn

@@ -45,15 +45,9 @@ defmodule LiveViewStudioWeb.LightLive do
       </button>
 
       <form phx-change="change-temp">
-        <input type="radio" id="3000" name="temp" value="3000"
-              checked={@temp == 3000} />
-        <label for="3000">3000</label>
-        <input type="radio" id="4000" name="temp" value="4000"
-              checked={@temp == 4000} />
-        <label for="4000">4000</label>
-        <input type="radio" id="5000" name="temp" value="5000"
-              checked={@temp == 5000} />
-        <label for="5000">5000</label>
+        <%= for temp_option <- [3000, 4000, 5000] do %>
+          <%= temp_radio_button(%{temp_option: temp_option, checked: temp_option == @temp}) %>
+        <% end %>
       </form>
     """
   end
@@ -95,6 +89,19 @@ defmodule LiveViewStudioWeb.LightLive do
       |> assign(:temp, String.to_integer(temp))
 
     {:noreply, socket}
+  end
+
+  defp temp_radio_button(assigns) do
+    ~H"""
+        <input
+          type="radio"
+          id={@temp_option}
+          name="temp"
+          value={@temp_option}
+          checked={@checked}
+        />
+        <label for={@temp_option}><%= @temp_option %></label>
+    """
   end
 
   defp temp_color(3000), do: "#F1C40D"
