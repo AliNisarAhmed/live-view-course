@@ -34,22 +34,23 @@ defmodule LiveViewStudioWeb.ServersLive do
   end
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <h1>Servers</h1>
     <div id="servers">
       <div class="sidebar">
         <nav>
           <%= for server <- @servers do %>
             <div>
-              <%= live_patch link_body(server),
-                    to: Routes.live_path(
-                              @socket,
-                              __MODULE__,
-                              id: server.id
-                        ),
-                    class: if server == @selected_server, do: "active" %>
+              <%= live_patch server.name,
+                  to: Routes.live_path(
+                      @socket,
+                      __MODULE__,
+                      # id: server.id
+                      name: server.name
+                  ),
+                  class: if server == @selected_server, do: "active"
+              %>
             </div>
-
           <% end %>
         </nav>
       </div>
@@ -58,7 +59,7 @@ defmodule LiveViewStudioWeb.ServersLive do
           <div class="card">
             <div class="header">
               <h2><%= @selected_server.name %></h2>
-              <span class="<%= @selected_server.status %>">
+              <span class={@selected_server.status}>
                 <%= @selected_server.status %>
               </span>
             </div>
@@ -96,12 +97,23 @@ defmodule LiveViewStudioWeb.ServersLive do
     """
   end
 
-  defp link_body(server) do
-    assigns = %{name: server.name}
+  def handle_params(%{"id" => id}, _url, socket) do
+    id = String.to_integer(id)
 
-    ~L"""
-    <img src="/images/server.svg">
-    <%= @name %>
-    """
+    server = Servers.get_server!(id)
+
+    socket = assign(socket, selected_server: server)
+    {:noreply, socket}
+  end
+
+  def handle_params(%{"name" => name}, _url, socket) do
+    server = Servers.get_server_by_name(name)
+
+    socket = assign(socket, selected_server: server)
+    {:noreply, socket}
+  end
+
+  def handle_params(_params, _url, socket) do
+    {:noreply, socket}
   end
 end
