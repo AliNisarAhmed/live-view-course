@@ -313,3 +313,55 @@ alias LiveViewStudio.GitRepos.GitRepo
   license: "bsdl"
 }
 |> Repo.insert!()
+
+# ---------- SERVERS _---------------------
+
+alias LiveViewStudio.Servers.Server
+
+%Server{
+  name: "dancing-lizard",
+  status: "up",
+  deploy_count: 14,
+  size: 19.5,
+  framework: "Elixir/Phoenix",
+  git_repo: "https://git.example.com/dancing-lizard.git",
+  last_commit_id: "sdfij2inv",
+  last_commit_message: "If this works, I'm going disco"
+}
+|> Repo.insert!()
+
+%Server{
+  name: "lively-frog",
+  status: "up",
+  deploy_count: 12,
+  size: 24.0,
+  framework: "Elixir/Phoenix",
+  git_repo: "https://git.example.com/lively-frog.git",
+  last_commit_id: "djgfhdckfr",
+  last_commit_message: "Does it scale?"
+}
+|> Repo.insert!()
+
+%Server{
+  name: "curious-raven",
+  status: "up",
+  deploy_count: 21,
+  size: 17.25,
+  framework: "Ruby/Rails",
+  git_repo: "https://git.example.com/curious-raven.git",
+  last_commit_id: "lskjdngf",
+  last_commit_message: "Fixed a bug!"
+}
+|> Repo.insert!()
+
+%Server{
+  name: "cryptic-owl",
+  status: "down",
+  deploy_count: 2,
+  size: 5.0,
+  framework: "Elixir/Phoenix",
+  git_repo: "https://git.example.com/cryptic-owl.git",
+  last_commit_id: "lkjsndgjs",
+  last_commit_message: "First big launch"
+}
+|> Repo.insert!()
