@@ -1,11 +1,14 @@
-defmodule LiveViewStudioWeb.PaginateLive do
+defmodule LiveViewStudioWeb.VehiclesLive do
   use LiveViewStudioWeb, :live_view
 
-  alias LiveViewStudio.Donations
+  alias LiveViewStudio.Vehicles
 
   def mount(_params, _session, socket) do
-    # Since handle_params is invoked after mount, we do not need to initiate the state in mount
-    {:ok, socket, temporary_assigns: [donations: []]}
+    socket = assign(
+      socket,
+      total_vehicles: Vehicles.count_vehicles()
+    )
+    {:ok, socket, temporary_assigns: [vehicles: []]}
   end
 
   def handle_params(params, _url, socket) do
@@ -13,12 +16,14 @@ defmodule LiveViewStudioWeb.PaginateLive do
     per_page = String.to_integer(params["per_page"] || "5")
 
     paginate_options = %{page: page, per_page: per_page}
-    donations = Donations.list_donations(paginate: paginate_options)
+
+    vehicles = Vehicles.list_vehicles(paginate: paginate_options)
 
     socket =
-      assign(socket,
+      assign(
+        socket,
         options: paginate_options,
-        donations: donations
+        vehicles: vehicles
       )
 
     {:noreply, socket}
@@ -27,7 +32,6 @@ defmodule LiveViewStudioWeb.PaginateLive do
   def handle_event("select-per-page", %{"per_page" => per_page}, socket) do
     per_page = String.to_integer(per_page)
 
-    # push_patch invoked handle_params, which updates the state for us
     socket =
       push_patch(socket,
         to:
@@ -40,10 +44,6 @@ defmodule LiveViewStudioWeb.PaginateLive do
       )
 
     {:noreply, socket}
-  end
-
-  defp expires_class(donation) do
-    if Donations.almost_expired?(donation), do: "eat-now", else: "fresh"
   end
 
   # Used in View/Template

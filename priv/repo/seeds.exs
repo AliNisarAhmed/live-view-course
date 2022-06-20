@@ -366,6 +366,10 @@ alias LiveViewStudio.Servers.Server
 }
 |> Repo.insert!()
 
+# ---- DONATIONS
+
+alias LiveViewStudio.Donations.Donation
+
 donation_items = [
   {"☕️", "Coffee"},
   {"🥛", "Milk"},
@@ -429,6 +433,18 @@ for _i <- 1..100 do
     item: item,
     quantity: Enum.random(1..20),
     days_until_expires: Enum.random(1..30)
+  }
+  |> Repo.insert!()
+end
+
+
+alias LiveViewStudio.Vehicles.Vehicle
+
+for _i <- 1..1000 do
+  %Vehicle{
+    make: Faker.Vehicle.make(),
+    model: Faker.Vehicle.model(),
+    color: Faker.Color.name()
   }
   |> Repo.insert!()
 end
