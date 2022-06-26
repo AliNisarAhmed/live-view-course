@@ -283,6 +283,7 @@ defmodule LiveViewStudio.Cities do
       "Edinburg, TX",
       "Edmond, OK",
       "Edmonds, WA",
+      "Edmonton, CA",
       "El Cajon, CA",
       "El Centro, CA",
       "El Monte, CA",

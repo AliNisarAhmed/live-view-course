@@ -22,10 +22,13 @@ defmodule LiveViewStudioWeb.Router do
     live "/license", LicenseLive
     live "/sales-dashboard", SalesDashboardLive
     live "/search", SearchLive
+    live "/flights", FlightsLive
     live "/autocomplete", AutocompleteLive
     live "/filter", FilterLive
+    live "/git-repos", GitReposLive
     live "/servers", ServersLive
     live "/paginate", PaginateLive
+    live "/vehicles", VehiclesLive
     live "/sort", SortLive
     live "/volunteers", VolunteersLive
   end

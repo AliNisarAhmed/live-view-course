@@ -49,6 +49,9 @@ defmodule LiveViewStudio.Servers do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  def get_server_by_name(name), do: Repo.get_by(Server, name: name)
+
   def create_server(attrs \\ %{}) do
     %Server{}
     |> Server.changeset(attrs)
