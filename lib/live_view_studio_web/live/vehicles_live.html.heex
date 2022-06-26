@@ -11,10 +11,18 @@
 		<table>
 			<thead>
 				<tr>
-					<th>ID</th>
-					<th>Make</th>
-					<th>Model</th>
-					<th>Color</th>
+					<th class="item">
+            			<%= sort_link(@socket, "ID", :id, @options) %>
+          			</th>
+					<th class="item">
+            			<%= sort_link(@socket, "Make", :make, @options) %>
+          			</th>
+					<th class="item">
+						<%= sort_link(@socket, "Model", :model, @options) %>
+					</th>
+					<th class="item">
+						<%= sort_link(@socket, "Color", :color, @options) %>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,37 +37,26 @@
 			</tbody>
 		</table>
 		<div class="footer">
-			<div class="pagination">
+			 <div class="pagination">
 				<%= if @options.page > 1 do %>
-
-					<%= pagination_link(
-						@socket,
-						"Previous",
-						@options.page - 1,
-						@options.per_page,
-						"previous"
-					) %>
-
+				<%= pagination_link(@socket,
+									"Previous",
+									@options.page - 1,
+									@options,
+									"previous") %>
 				<% end %>
-
 				<%= for i <- (@options.page - 2)..(@options.page + 2), i > 0 do %>
-					<%= if i <= ceil(@total_vehicles / @options.per_page) do %>
-						<%= pagination_link(@socket,
-      						                i,
-                        					i,
-                        					@options.per_page,
-                        					(if i == @options.page, do: "active")) %>
-						<% end %>
-				<% end %>
-
-				<%= if (@options.page * @options.per_page) < @total_vehicles do %>
 					<%= pagination_link(@socket,
-										"Next",
-										@options.page + 1,
-										@options.per_page,
-										"next") %>
-				<% end %>
-
+										i,
+										i,
+										@options,
+										(if i == @options.page, do: "active")) %>
+					<% end %>
+				<%= pagination_link(@socket,
+									"Next",
+									@options.page + 1,
+									@options,
+									"next") %>
 			</div>
 		</div>
 	</div>
