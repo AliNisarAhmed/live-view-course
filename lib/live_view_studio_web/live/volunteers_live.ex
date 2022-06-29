@@ -21,19 +21,13 @@ defmodule LiveViewStudioWeb.VolunteersLive do
   def handle_event("save", %{"volunteer" => params}, socket) do
     case Volunteers.create_volunteer(params) do
       {:ok, volunteer} ->
-        socket =
-          update(
-            socket,
-            :volunteers,
-            fn volunteers -> [volunteer | volunteers] end
-          )
+        socket = update(socket, :volunteers, fn vs -> [volunteer | vs] end)
 
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
         socket = assign(socket, changeset: changeset)
 
         :timer.sleep(500)
-
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->

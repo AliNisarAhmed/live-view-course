@@ -4,6 +4,7 @@ defmodule LiveViewStudioWeb.PaginateLive do
   alias LiveViewStudio.Donations
 
   def mount(_params, _session, socket) do
+    # Since handle_params is invoked after mount, we do not need to initiate the state in mount
     {:ok, socket, temporary_assigns: [donations: []]}
   end
 
@@ -23,9 +24,10 @@ defmodule LiveViewStudioWeb.PaginateLive do
     {:noreply, socket}
   end
 
-  def handle_event("select-per-page", %{"per-page" => per_page}, socket) do
+  def handle_event("select-per-page", %{"per_page" => per_page}, socket) do
     per_page = String.to_integer(per_page)
 
+    # push_patch invoked handle_params, which updates the state for us
     socket =
       push_patch(socket,
         to:
@@ -44,6 +46,7 @@ defmodule LiveViewStudioWeb.PaginateLive do
     if Donations.almost_expired?(donation), do: "eat-now", else: "fresh"
   end
 
+  # Used in View/Template
   defp pagination_link(socket, text, page, per_page, class) do
     live_patch(text,
       to:
