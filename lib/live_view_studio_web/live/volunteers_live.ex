@@ -40,9 +40,29 @@ defmodule LiveViewStudioWeb.VolunteersLive do
     changeset =
       %Volunteer{}
       |> Volunteers.change_volunteer(params)
-      |> Map.put(:action, :insert) # This simulates the db "insert" on the changeset & populates the errors
+      # This simulates the db "insert" on the changeset & populates the errors
+      |> Map.put(:action, :insert)
 
     socket = assign(socket, changeset: changeset)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    volunteer = Volunteers.get_volunteer!(id)
+
+    {:ok, _volunteer} =
+      Volunteers.update_volunteer(
+        volunteer,
+        %{checked_out: !volunteer.checked_out}
+      )
+
+    volunteers = Volunteers.list_volunteers()
+
+    socket =
+      assign(socket,
+        volunteers: volunteers
+      )
 
     {:noreply, socket}
   end

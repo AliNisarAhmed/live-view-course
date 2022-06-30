@@ -84,6 +84,34 @@ defmodule LiveViewStudioWeb.ServersLive do
     {:noreply, socket}
   end
 
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    server = Servers.get_server!(id)
+
+    {:ok, _server} =
+      Servers.update_server(
+        server,
+        %{status: Servers.toggle_status(server.status)}
+      )
+
+    socket = assign(socket, selected_server: server)
+
+    # servers = Servers.list_servers()
+
+    socket =
+      update(socket, :servers, fn servers ->
+        for s <- servers do
+          case s.id == server.id do
+            true -> server
+            _ -> s
+          end
+        end
+      end)
+
+    :timer.sleep(500)
+
+    {:noreply, socket}
+  end
+
   defp link_body(server) do
     assigns = %{name: server.name, status: server.status}
 
