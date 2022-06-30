@@ -30,15 +30,28 @@
 			for={@changeset}
 			url="#"
 			phx-submit="save"
+			phx-change="validate"
 		>
 			<div class="field">
 			Name:
-				<%= text_input(f, :name, placeholder: "Name", autocomplete: "off") %>
+				<%= text_input(f,
+						:name,
+						placeholder: "Name",
+						autocomplete: "off",
+						phx_debounce: "2000"
+					)
+				%>
 				<%= error_tag f, :name %>
 			</div>
 			<div class="field">
 			Framework:
-				<%= text_input(f, :framework, placeholder: "Framework", autocomplete: "off") %>
+				<%= text_input(f,
+						:framework,
+						placeholder: "Framework",
+						autocomplete: "off",
+						phx_debounce: "2000"
+					)
+				%>
 				<%= error_tag f, :framework %>
 			</div>
 			<div class="field">
@@ -48,7 +61,13 @@
 			</div>
 			<div class="field">
 			Git Repo:
-				<%= text_input(f, :git_repo, placeholder: "Git Repo", autocomplete: "off") %>
+				<%= text_input(f,
+						:git_repo,
+						placeholder: "Git Repo",
+						autocomplete: "off",
+						phx_debounce: "2000"
+					)
+				%>
 				<%= error_tag f, :git_repo %>
 			</div>
 

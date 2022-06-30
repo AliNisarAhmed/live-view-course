@@ -35,4 +35,15 @@ defmodule LiveViewStudioWeb.VolunteersLive do
         {:noreply, socket}
     end
   end
+
+  def handle_event("validate", %{"volunteer" => params}, socket) do
+    changeset =
+      %Volunteer{}
+      |> Volunteers.change_volunteer(params)
+      |> Map.put(:action, :insert) # This simulates the db "insert" on the changeset & populates the errors
+
+    socket = assign(socket, changeset: changeset)
+
+    {:noreply, socket}
+  end
 end

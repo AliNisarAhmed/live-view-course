@@ -6,15 +6,24 @@
     for={@changeset}
     url="#"
     phx-submit="save"
+    phx-change="validate"
   >
     <div class="field">
       Name:
-      <%= text_input(f, :name, placeholder: "Name", autocomplete: "off") %>
+      <%= text_input(f,
+            :name,
+            placeholder: "Name",
+            autocomplete: "off",
+            phx_debounce: "2000") %>
       <%= error_tag f, :name %>
     </div>
     <div class="field">
       Phone:
-      <%= text_input(f, :phone, placeholder: "Phone", autocomplete: "off") %>
+      <%= text_input(f,
+            :phone,
+            placeholder: "Phone",
+            autocomplete: "off",
+            phx_debounce: "blur") %>
       <%= error_tag f, :phone %>
     </div>
 
