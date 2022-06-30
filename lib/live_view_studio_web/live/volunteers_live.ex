@@ -21,19 +21,13 @@ defmodule LiveViewStudioWeb.VolunteersLive do
   def handle_event("save", %{"volunteer" => params}, socket) do
     case Volunteers.create_volunteer(params) do
       {:ok, volunteer} ->
-        socket =
-          update(
-            socket,
-            :volunteers,
-            fn volunteers -> [volunteer | volunteers] end
-          )
+        socket = update(socket, :volunteers, fn vs -> [volunteer | vs] end)
 
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
         socket = assign(socket, changeset: changeset)
 
         :timer.sleep(500)
-
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -46,12 +40,9 @@ defmodule LiveViewStudioWeb.VolunteersLive do
     changeset =
       %Volunteer{}
       |> Volunteers.change_volunteer(params)
-      |> Map.put(:action, :insert)
+      |> Map.put(:action, :insert) # This simulates the db "insert" on the changeset & populates the errors
 
-    socket =
-      assign(socket,
-        changeset: changeset
-      )
+    socket = assign(socket, changeset: changeset)
 
     {:noreply, socket}
   end
