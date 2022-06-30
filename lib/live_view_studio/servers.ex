@@ -18,7 +18,7 @@ defmodule LiveViewStudio.Servers do
 
   """
   def list_servers do
-    Repo.all(Server)
+    Repo.all(from s in Server, order_by: [desc: s.id])
   end
 
   @doc """
@@ -49,6 +49,9 @@ defmodule LiveViewStudio.Servers do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  def get_server_by_name(name), do: Repo.get_by(Server, name: name)
+
   def create_server(attrs \\ %{}) do
     %Server{}
     |> Server.changeset(attrs)
@@ -101,4 +104,7 @@ defmodule LiveViewStudio.Servers do
   def change_server(%Server{} = server, attrs \\ %{}) do
     Server.changeset(server, attrs)
   end
+
+  def toggle_status("up"), do: "down"
+  def toggle_status("down"), do: "up"
 end

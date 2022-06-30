@@ -4,55 +4,55 @@ defmodule LiveViewStudioWeb.FilterLive do
   alias LiveViewStudio.Boats
 
   def mount(_params, _session, socket) do
-    socket =
-      assign(socket,
-        boats: Boats.list_boats(),
-        type: "",
-        prices: []
-      )
+    socket = assign(socket, assign_defaults())
 
     {:ok, socket, temporary_assigns: [boats: []]}
   end
 
   def render(assigns) do
-    ~L"""
-    <h1>Daily Boat Rentals</h1>
-    <div id="filter">
-      <form phx-change="filter">
-        <div class="filters">
-          <select name="type">
-            <%= options_for_select(type_options(), @type) %>
-          </select>
-          <div class="prices">
-            <input type="hidden" name="prices[]" value="" />
-            <%= for price <- ["$", "$$", "$$$"]  do %>
-              <%= price_checkbox(price: price, checked: price in @prices) %>
-            <% end %>
-          </div>
-        </div>
-      </form>
+    ~H"""
+      <h1>Daily Boat Rentals</h1>
+      <div id="filter">
 
-      <div class="boats">
-        <%= for boat <- @boats do %>
-          <div class="card">
-            <img src="<%= boat.image %>">
-            <div class="content">
-              <div class="model">
-                <%= boat.model %>
-              </div>
-              <div class="details">
-                <span class="price">
-                  <%= boat.price %>
-                </span>
-                <span class="type">
-                  <%= boat.type %>
-                </span>
-              </div>
+        <form phx-change="filter">
+          <div class="filters">
+            <select name="type" id="">
+              <%= options_for_select(type_options(), @type) %>
+            </select>
+
+            <div class="prices">
+              <input type="hidden" name="prices[]" value="" />
+              <%= for price <- ["$", "$$", "$$$"] do %>
+                <%= price_checkbox(%{price: price, checked: price in @prices}) %>
+              <% end %>
+
+              <a href="#" phx-click="clear-all-filters">Clear All</a>
             </div>
           </div>
-        <% end %>
+        </form>
+
+
+        <div class="boats">
+          <%= for boat <- @boats do %>
+            <div class="card">
+              <img src={boat.image} alt="">
+              <div class="content">
+                <div class="model">
+                  <%= boat.model %>
+                </div>
+                <div class="details">
+                  <span class="price">
+                    <%= boat.price %>
+                  </span>
+                  <span class="type">
+                    <%= boat.type %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
     """
   end
 
@@ -63,14 +63,25 @@ defmodule LiveViewStudioWeb.FilterLive do
     {:noreply, socket}
   end
 
-  defp price_checkbox(assigns) do
-    assigns = Enum.into(assigns, %{})
+  def handle_event("clear-all-filters", _, socket) do
+    socket = assign(socket, assign_defaults())
+    {:noreply, socket}
+  end
 
-    ~L"""
-    <input type="checkbox" id="<%= @price %>"
-           name="prices[]" value="<%= @price %>"
-           <%= if @checked, do: "checked" %>/>
-    <label for="<%= @price %>"><%= @price %></label>
+  defp assign_defaults do
+    [boats: Boats.list_boats(), type: "", prices: []]
+  end
+
+  defp price_checkbox(assigns) do
+    ~H"""
+     <input
+      type="checkbox"
+      id={@price}
+      name="prices[]"
+      value={@price}
+      checked={@checked}
+    />
+    <label for={@price}><%= @price %></label>
     """
   end
 
