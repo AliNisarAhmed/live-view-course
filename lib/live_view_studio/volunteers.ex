@@ -8,7 +8,7 @@ defmodule LiveViewStudio.Volunteers do
 
   alias LiveViewStudio.Volunteers.Volunteer
 
-  def subscribe do
+  def subscribe() do
     Phoenix.PubSub.subscribe(LiveViewStudio.PubSub, "volunteers")
   end
 
@@ -57,21 +57,21 @@ defmodule LiveViewStudio.Volunteers do
     %Volunteer{}
     |> Volunteer.changeset(attrs)
     |> Repo.insert()
-    |> broadcast(:volunteer_created)
+    |> broadcast(:volunteer_updated)
   end
 
   def update_volunteer(%Volunteer{} = volunteer, attrs) do
     volunteer
     |> Volunteer.changeset(attrs)
     |> Repo.update()
-    |> broadcast(:volunteer_updated)
+    |> broadcast(:volunteer_created)
   end
 
-  def broadcast({:ok, volunteer}, event) do
+  def broadcast({:ok, volunteer}, event_name) do
     Phoenix.PubSub.broadcast(
       LiveViewStudio.PubSub,
       "volunteers",
-      {event, volunteer}
+      {event_name, volunteer}
     )
 
     {:ok, volunteer}

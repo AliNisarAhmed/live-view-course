@@ -8,6 +8,12 @@ defmodule LiveViewStudio.Servers do
 
   alias LiveViewStudio.Servers.Server
 
+  @topic inspect(__MODULE__)
+
+  def subscribe() do
+    Phoenix.PubSub.subscribe(LiveViewStudio.PubSub, @topic)
+  end
+
   @doc """
   Returns the list of servers.
 
@@ -18,7 +24,7 @@ defmodule LiveViewStudio.Servers do
 
   """
   def list_servers do
-    Repo.all(Server)
+    Repo.all(from s in Server, order_by: [desc: s.id])
   end
 
   @doc """
@@ -49,10 +55,14 @@ defmodule LiveViewStudio.Servers do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  def get_server_by_name(name), do: Repo.get_by(Server, name: name)
+
   def create_server(attrs \\ %{}) do
     %Server{}
     |> Server.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:server_created)
   end
 
   @doc """
@@ -71,7 +81,16 @@ defmodule LiveViewStudio.Servers do
     server
     |> Server.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:server_updated)
   end
+
+  def broadcast({:ok, server}, event_name) do
+    Phoenix.PubSub.broadcast(LiveViewStudio.PubSub, @topic, {event_name, server})
+
+    {:ok, server}
+  end
+
+  def broadcast({:error, _reason} = error, _event), do: error
 
   @doc """
   Deletes a server.
@@ -101,4 +120,7 @@ defmodule LiveViewStudio.Servers do
   def change_server(%Server{} = server, attrs \\ %{}) do
     Server.changeset(server, attrs)
   end
+
+  def toggle_status("up"), do: "down"
+  def toggle_status("down"), do: "up"
 end
