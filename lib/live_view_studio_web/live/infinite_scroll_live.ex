@@ -22,41 +22,6 @@ defmodule LiveViewStudioWeb.InfiniteScrollLive do
     )
   end
 
-  def render(assigns) do
-    ~L"""
-    <div id="infinite-scroll">
-      <h1>Pizza Lovers Timeline</h1>
-      <div id="orders" phx-update="append">
-        <%= for order <- @orders do %>
-          <div class="order" id="<%= order.id %>">
-            <div class="id">
-              <%= order.id %>
-            </div>
-            <div>
-              <div class="pizza">
-                <%= order.pizza %>
-              </div>
-              <div>
-                ordered by
-                <span class="username">
-                  <%= order.username %>
-                </span>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div id="footer">
-        <button phx-click="load-more"
-                phx-disable-with="loading...">
-          Load More
-        </button>
-      </div>
-    </div>
-    """
-  end
-
   def handle_event("load-more", _, socket) do
     socket =
       socket
