@@ -1,0 +1,57 @@
+<h1>Volunteer Check-In</h1>
+<div id="checkin">
+
+  <.form
+    let={f}
+    for={@changeset}
+    url="#"
+    phx-submit="save"
+    phx-change="validate"
+  >
+    <div class="field">
+      Name:
+      <%= text_input(f,
+            :name,
+            placeholder: "Name",
+            autocomplete: "off",
+            phx_debounce: "2000") %>
+      <%= error_tag f, :name %>
+    </div>
+    <div class="field">
+      Phone:
+      <%= text_input(f,
+            :phone,
+            placeholder: "Phone",
+            autocomplete: "off",
+            phx_debounce: "blur",
+            phx_hook: "Volunteer") %>
+      <%= error_tag f, :phone %>
+    </div>
+
+    <%= submit "Check In", phx_disable_with: "Saving..." %>
+  </.form>
+
+
+  <div phx-update="prepend">
+    <%= for volunteer <- @volunteers do %>
+      <div
+        class={"volunteer #{if volunteer.checked_out, do: "out"}"}
+        id={volunteer.id}
+      >
+        <div class="name">
+          <%= volunteer.name %>
+        </div>
+        <div class="phone">
+          <img src="images/phone.svg">
+          <%= volunteer.phone %>
+        </div>
+        <div class="status">
+            <button phx-click="toggle-status"
+                    phx-value-id={volunteer.id}>
+              <%= if volunteer.checked_out, do: "Check In", else: "Check Out" %>
+            </button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

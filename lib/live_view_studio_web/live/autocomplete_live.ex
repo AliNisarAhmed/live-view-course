@@ -14,44 +14,43 @@ defmodule LiveViewStudioWeb.AutocompleteLive do
         loading: false
       )
 
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [stores: []]}
   end
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <h1>Find a Store</h1>
     <div id="search">
 
-      <form phx-submit="zip-search">
-        <input type="text" name="zip" value="<%= @zip %>"
+      <form action="" phx-submit="zip-search">
+        <input type="text" name="zip" value={@zip}
                placeholder="Zip Code"
                autofocus autocomplete="off"
-               <%= if @loading, do: "readonly" %> />
-
+               readonly={@loading}
+               />
         <button type="submit">
-          <img src="images/search.svg">
+          <img src="images/search.svg" alt="">
         </button>
       </form>
 
-      <form phx-submit="city-search" phx-change="suggest-city">
-        <input type="text" name="city" value="<%= @city %>"
+      <form action="" phx-submit="city-search" phx-change="suggest-city">
+        <input type="text" name="city" value={@city}
                placeholder="City"
                autocomplete="off"
+               readonly={@loading}
                list="matches"
                phx-debounce="1000"
-               <%= if @loading, do: "readonly" %> />
-
+               />
         <button type="submit">
-          <img src="images/search.svg">
+          <img src="images/search.svg" alt="">
         </button>
       </form>
 
       <datalist id="matches">
         <%= for match <- @matches do %>
-          <option value="<%= match %>"><%= match %></option>
+          <option value={match}><%= match %></option>
         <% end %>
       </datalist>
-
 
       <%= if @loading do %>
         <div class="loader">
@@ -62,30 +61,30 @@ defmodule LiveViewStudioWeb.AutocompleteLive do
       <div class="stores">
         <ul>
           <%= for store <- @stores do %>
-            <li>
-              <div class="first-line">
-                <div class="name">
-                  <%= store.name %>
-                </div>
-                <div class="status">
-                  <%= if store.open do %>
-                    <span class="open">Open</span>
-                  <% else %>
-                    <span class="closed">Closed</span>
-                  <% end %>
-                </div>
+          <li>
+            <div class="first-line">
+              <div class="name">
+                <%= store.name %>
               </div>
-              <div class="second-line">
-                <div class="street">
-                  <img src="images/location.svg">
-                  <%= store.street %>
-                </div>
-                <div class="phone_number">
-                  <img src="images/phone.svg">
-                  <%= store.phone_number %>
-                </div>
+              <div class="status">
+                <%= if store.open do %>
+                  <span class="open">Open</span>
+                <% else %>
+                  <span class="closed">Closed</span>
+                <% end %>
               </div>
-            </li>
+            </div>
+            <div class="second-line">
+              <div class="street">
+                <img src="images/location.svg" alt="">
+                <%= store.street %>
+              </div>
+              <div class="phone_number">
+                <img src="images/phone.svg" alt="">
+                <%= store.phone_number %>
+              </div>
+            </div>
+          </li>
           <% end %>
         </ul>
       </div>
@@ -135,7 +134,11 @@ defmodule LiveViewStudioWeb.AutocompleteLive do
         {:noreply, socket}
 
       stores ->
-        socket = assign(socket, stores: stores, loading: false)
+        socket =
+          socket
+          |> clear_flash()
+          |> assign(stores: stores, loading: false)
+
         {:noreply, socket}
     end
   end
@@ -151,7 +154,11 @@ defmodule LiveViewStudioWeb.AutocompleteLive do
         {:noreply, socket}
 
       stores ->
-        socket = assign(socket, stores: stores, loading: false)
+        socket =
+          socket
+          |> clear_flash()
+          |> assign(stores: stores, loading: false)
+
         {:noreply, socket}
     end
   end

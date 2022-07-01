@@ -12,9 +12,6 @@
 
 alias LiveViewStudio.Repo
 alias LiveViewStudio.Boats.Boat
-alias LiveViewStudio.Servers.Server
-alias LiveViewStudio.Donations.Donation
-alias LiveViewStudio.PizzaOrders.PizzaOrder
 
 %Boat{
   model: "1760 Retriever Jon Deluxe",
@@ -160,6 +157,167 @@ alias LiveViewStudio.PizzaOrders.PizzaOrder
 }
 |> Repo.insert!()
 
+# --------------------------------------------------
+
+alias LiveViewStudio.Stores.Store
+
+%Store{
+  name: "Downtown Helena",
+  street: "312 Montana Avenue",
+  phone_number: "406-555-0100",
+  city: "Helena, MT",
+  zip: "59602",
+  open: true,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "East Helena",
+  street: "227 Miner's Lane",
+  phone_number: "406-555-0120",
+  city: "Helena, MT",
+  zip: "59602",
+  open: false,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "Westside Helena",
+  street: "734 Lake Loop",
+  phone_number: "406-555-0130",
+  city: "Helena, MT",
+  zip: "59602",
+  open: true,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "Downtown Denver",
+  street: "426 Aspen Loop",
+  phone_number: "303-555-0140",
+  city: "Denver, CO",
+  zip: "80204",
+  open: true,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "Midtown Denver",
+  street: "7 Broncos Parkway",
+  phone_number: "720-555-0150",
+  city: "Denver, CO",
+  zip: "80204",
+  open: false,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "Denver Stapleton",
+  street: "965 Summit Peak",
+  phone_number: "303-555-0160",
+  city: "Denver, CO",
+  zip: "80204",
+  open: true,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Store{
+  name: "Denver West",
+  street: "501 Mountain Lane",
+  phone_number: "720-555-0170",
+  city: "Denver, CO",
+  zip: "80204",
+  open: true,
+  hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+# ---------------------------------------
+
+alias LiveViewStudio.GitRepos.GitRepo
+
+%GitRepo{
+  name: "elixir",
+  url: "https://github.com/elixir-lang/elixir",
+  owner_login: "elixir-lang",
+  owner_url: "https://github.com/elixir-lang",
+  fork: false,
+  stars: 16900,
+  language: "elixir",
+  license: "apache"
+}
+|> Repo.insert!()
+
+%GitRepo{
+  name: "phoenix",
+  url: "https://github.com/phoenixframework/phoenix",
+  owner_login: "phoenixframework",
+  owner_url: "https://github.com/phoenixframework",
+  fork: false,
+  stars: 15200,
+  language: "elixir",
+  license: "mit"
+}
+|> Repo.insert!()
+
+%GitRepo{
+  name: "phoenix_live_view",
+  url: "https://github.com/phoenixframework/phoenix_live_view",
+  owner_login: "phoenixframework",
+  owner_url: "https://github.com/phoenixframework",
+  fork: false,
+  stars: 3000,
+  language: "elixir",
+  license: "mit"
+}
+|> Repo.insert!()
+
+%GitRepo{
+  name: "phoenix_live_view",
+  url: "https://github.com/clarkware/phoenix_live_view",
+  owner_login: "clarkware",
+  owner_url: "https://github.com/clarkware",
+  fork: true,
+  stars: 0,
+  language: "elixir",
+  license: "mit"
+}
+|> Repo.insert!()
+
+%GitRepo{
+  name: "rails",
+  url: "https://github.com/rails/rails",
+  owner_login: "rails",
+  owner_url: "https://github.com/rails",
+  fork: false,
+  stars: 45600,
+  language: "ruby",
+  license: "mit"
+}
+|> Repo.insert!()
+
+%GitRepo{
+  name: "ruby",
+  url: "https://github.com/ruby/ruby",
+  owner_login: "ruby",
+  owner_url: "https://github.com/ruby",
+  fork: false,
+  stars: 16800,
+  language: "ruby",
+  license: "bsdl"
+}
+|> Repo.insert!()
+
+# ---------- SERVERS _---------------------
+
+alias LiveViewStudio.Servers.Server
+
 %Server{
   name: "dancing-lizard",
   status: "up",
@@ -167,8 +325,8 @@ alias LiveViewStudio.PizzaOrders.PizzaOrder
   size: 19.5,
   framework: "Elixir/Phoenix",
   git_repo: "https://git.example.com/dancing-lizard.git",
-  last_commit_id: "f3d41f7",
-  last_commit_message: "If this works, I'm going disco    🕺"
+  last_commit_id: "sdfij2inv",
+  last_commit_message: "If this works, I'm going disco"
 }
 |> Repo.insert!()
 
@@ -179,8 +337,8 @@ alias LiveViewStudio.PizzaOrders.PizzaOrder
   size: 24.0,
   framework: "Elixir/Phoenix",
   git_repo: "https://git.example.com/lively-frog.git",
-  last_commit_id: "d2eba26",
-  last_commit_message: "Does it scale? 🤔"
+  last_commit_id: "djgfhdckfr",
+  last_commit_message: "Does it scale?"
 }
 |> Repo.insert!()
 
@@ -191,8 +349,8 @@ alias LiveViewStudio.PizzaOrders.PizzaOrder
   size: 17.25,
   framework: "Ruby/Rails",
   git_repo: "https://git.example.com/curious-raven.git",
-  last_commit_id: "a3708f1",
-  last_commit_message: "Fixed a bug! 🐞"
+  last_commit_id: "lskjdngf",
+  last_commit_message: "Fixed a bug!"
 }
 |> Repo.insert!()
 
@@ -203,10 +361,14 @@ alias LiveViewStudio.PizzaOrders.PizzaOrder
   size: 5.0,
   framework: "Elixir/Phoenix",
   git_repo: "https://git.example.com/cryptic-owl.git",
-  last_commit_id: "c497e91",
-  last_commit_message: "First big launch! 🤞"
+  last_commit_id: "lkjsndgjs",
+  last_commit_message: "First big launch"
 }
 |> Repo.insert!()
+
+# ---- DONATIONS
+
+alias LiveViewStudio.Donations.Donation
 
 donation_items = [
   {"☕️", "Coffee"},
@@ -274,6 +436,19 @@ for _i <- 1..100 do
   }
   |> Repo.insert!()
 end
+
+alias LiveViewStudio.Vehicles.Vehicle
+
+for _i <- 1..1000 do
+  %Vehicle{
+    make: Faker.Vehicle.make(),
+    model: Faker.Vehicle.model(),
+    color: Faker.Color.name()
+  }
+  |> Repo.insert!()
+end
+
+alias LiveViewStudio.PizzaOrders.PizzaOrder
 
 pizza_toppings = [
   "🍗 Chicken",
