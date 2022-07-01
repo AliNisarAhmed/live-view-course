@@ -5,6 +5,8 @@ defmodule LiveViewStudioWeb.ServersLive do
   alias LiveViewStudio.Servers.Server
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Servers.subscribe()
+
     servers = Servers.list_servers()
 
     socket =
@@ -49,8 +51,6 @@ defmodule LiveViewStudioWeb.ServersLive do
   def handle_event("save", %{"server" => params}, socket) do
     case Servers.create_server(params) do
       {:ok, server} ->
-        socket = update(socket, :servers, fn svs -> [server | svs] end)
-
         socket =
           push_patch(socket,
             to:
@@ -93,9 +93,25 @@ defmodule LiveViewStudioWeb.ServersLive do
         %{status: Servers.toggle_status(server.status)}
       )
 
-    socket = assign(socket, selected_server: server)
+    {:noreply, socket}
+  end
 
-    # servers = Servers.list_servers()
+  def handle_info({:server_created, server}, socket) do
+    socket = update(socket, :servers, fn svs -> [server | svs] end)
+    {:noreply, socket}
+  end
+
+  def handle_info({:server_updated, server}, socket) do
+    socket =
+      if server.id == socket.assigns.selected_server.id do
+        assign(socket, selected_server: server)
+      else
+        socket
+      end
+
+    servers = Servers.list_servers()
+
+    socket = assign(socket, servers: servers)
 
     socket =
       update(socket, :servers, fn servers ->
@@ -106,8 +122,6 @@ defmodule LiveViewStudioWeb.ServersLive do
           end
         end
       end)
-
-    :timer.sleep(500)
 
     {:noreply, socket}
   end
