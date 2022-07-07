@@ -1,0 +1,8 @@
+<h1>Build A Sandbox</h1>
+
+<div id="sandbox">
+	<%= if @weight do %>
+		<.quote_component material="sand" weight={@weight} price={@price} hrs_until_expired="4" />
+		<%= live_component @socket, SandboxCalculatorComponent, id: :sandbox_calculator %>
+	<% end %>
+</div>
